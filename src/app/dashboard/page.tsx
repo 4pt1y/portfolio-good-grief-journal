@@ -8,6 +8,13 @@ export default async function DashboardPage() {
 
   if (!user) redirect('/login')
 
+  const { count } = await supabase
+    .from('loved_ones')
+    .select('id', { count: 'exact', head: true })
+    .eq('user_id', user.id)
+
+  if (count === 0) redirect('/onboarding')
+
   return (
     <div className="min-h-screen bg-stone-50">
       <nav className="bg-white border-b border-stone-200 px-6 py-4 flex justify-between items-center">
