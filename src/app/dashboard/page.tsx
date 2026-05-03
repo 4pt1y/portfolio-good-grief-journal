@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import SignOutButton from '@/components/SignOutButton'
+import PromptCard from './PromptCard'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -88,28 +89,11 @@ export default async function DashboardPage() {
         <h2 className="text-3xl font-serif text-stone-800 mb-10">{lovedOne.name}</h2>
 
         {promptRow && promptText ? (
-          <div className="bg-white rounded-2xl border border-stone-200 shadow-sm p-8">
-            <div className="flex items-center gap-2 mb-5">
-              <span className="text-xs font-medium text-stone-400 uppercase tracking-widest">
-                Today's prompt
-              </span>
-              {category && (
-                <>
-                  <span className="text-stone-200 select-none">·</span>
-                  <span className="text-xs text-stone-400">{category}</span>
-                </>
-              )}
-            </div>
-            <p className="text-lg font-serif text-stone-700 leading-relaxed mb-8">
-              {promptText}
-            </p>
-            <Link
-              href={`/journal?prompt_id=${promptRow.id}`}
-              className="inline-block px-6 py-3 bg-stone-800 text-white rounded-xl text-sm font-medium hover:bg-stone-700 transition-colors"
-            >
-              Start journaling
-            </Link>
-          </div>
+          <PromptCard
+            initialPrompt={{ id: promptRow.id, text: promptText, category }}
+            lovedOneName={lovedOne.name}
+            usedIds={usedIds}
+          />
         ) : (
           <div className="bg-white rounded-2xl border border-stone-200 shadow-sm p-8">
             <p className="text-stone-500 text-sm">No prompts available yet.</p>

@@ -45,6 +45,10 @@ export default function OnboardingPage() {
       setError('Please enter their name.')
       return
     }
+    if (step === 2 && dateOfPassing && dateOfBirth && dateOfPassing < dateOfBirth) {
+      setError("Date of passing can't be before date of birth.")
+      return
+    }
     setError('')
     setStep(s => s + 1)
   }
@@ -237,7 +241,7 @@ export default function OnboardingPage() {
             </p>
             <div>
               <label className="block text-xs font-medium text-stone-600 mb-1.5">
-                Date of passing
+                Date of passing <span className="text-stone-400 font-normal">(optional)</span>
               </label>
               <input
                 type="date"
@@ -248,7 +252,7 @@ export default function OnboardingPage() {
             </div>
             <div>
               <label className="block text-xs font-medium text-stone-600 mb-1.5">
-                Date of birth
+                Date of birth <span className="text-stone-400 font-normal">(optional)</span>
               </label>
               <input
                 type="date"
