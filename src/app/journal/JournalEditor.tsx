@@ -8,19 +8,24 @@ type Props = {
   userId: string
   lovedOneId: string
   promptId: string
+  promptText: string
+  lovedOneName: string
 }
 
 type SaveStatus = 'idle' | 'saving' | 'saved'
+type AiPhase = 'idle' | 'streaming' | 'done'
 
 function wordCount(text: string): number {
   return text.trim() ? text.trim().split(/\s+/).filter(Boolean).length : 0
 }
 
-export default function JournalEditor({ userId, lovedOneId, promptId }: Props) {
+export default function JournalEditor({ userId, lovedOneId, promptId, promptText, lovedOneName }: Props) {
   const [content, setContent] = useState('')
   const [entryId, setEntryId] = useState<string | null>(null)
   const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle')
   const [finishing, setFinishing] = useState(false)
+  const [aiPhase, setAiPhase] = useState<AiPhase>('idle')
+  const [aiResponse, setAiResponse] = useState('')
 
   // Refs let the autosave interval always read the latest values without restarting
   const contentRef = useRef('')
@@ -30,6 +35,7 @@ export default function JournalEditor({ userId, lovedOneId, promptId }: Props) {
   entryIdRef.current = entryId
 
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const aiResponseRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
   const supabase = createClient()
 
@@ -85,6 +91,13 @@ export default function JournalEditor({ userId, lovedOneId, promptId }: Props) {
     return () => clearInterval(timer)
   }, [])
 
+  // Scroll AI response into view as it streams in
+  useEffect(() => {
+    if (aiPhase === 'streaming' && aiResponseRef.current) {
+      aiResponseRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    }
+  }, [aiResponse, aiPhase])
+
   function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setContent(e.target.value)
     // Auto-resize
@@ -96,10 +109,81 @@ export default function JournalEditor({ userId, lovedOneId, promptId }: Props) {
   async function handleFinish() {
     setFinishing(true)
     if (content.trim()) await performSave()
-    router.push('/dashboard')
+
+    const savedEntryId = entryIdRef.current
+    if (!savedEntryId) {
+      router.push('/dashboard')
+      return
+    }
+
+    setAiPhase('streaming')
+
+    try {
+      const res = await fetch('/api/ai-response', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          journal_entry_id: savedEntryId,
+          content: contentRef.current,
+          prompt_text: promptText,
+          loved_one_name: lovedOneName,
+        }),
+      })
+
+      if (!res.ok || !res.body) throw new Error('AI unavailable')
+
+      const reader = res.body.getReader()
+      const decoder = new TextDecoder()
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        setAiResponse(prev => prev + decoder.decode(value, { stream: true }))
+      }
+
+      setAiPhase('done')
+    } catch {
+      router.push('/dashboard')
+    }
   }
 
   const wc = wordCount(content)
+
+  if (aiPhase !== 'idle') {
+    return (
+      <div className="space-y-6">
+        <div className="bg-white rounded-2xl border border-stone-200 shadow-sm p-8">
+          <p className="text-stone-700 text-base leading-relaxed whitespace-pre-wrap">
+            {content}
+          </p>
+        </div>
+
+        <div ref={aiResponseRef} className="bg-amber-50 border border-amber-100 rounded-2xl p-8">
+          {aiPhase === 'streaming' && !aiResponse && (
+            <p className="text-sm text-stone-400 italic">A response is being written for you…</p>
+          )}
+          {aiResponse && (
+            <p className="text-base text-stone-700 leading-relaxed font-serif whitespace-pre-wrap">
+              {aiResponse}
+              {aiPhase === 'streaming' && (
+                <span className="inline-block w-0.5 h-4 bg-stone-400 ml-0.5 animate-pulse align-text-bottom" />
+              )}
+            </p>
+          )}
+          {aiPhase === 'done' && (
+            <div className="mt-6 pt-5 border-t border-amber-200">
+              <button
+                onClick={() => router.push('/dashboard')}
+                className="px-5 py-2.5 bg-stone-800 text-white rounded-xl text-sm font-medium hover:bg-stone-700 transition-colors"
+              >
+                Continue to dashboard
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="bg-white rounded-2xl border border-stone-200 shadow-sm p-8">

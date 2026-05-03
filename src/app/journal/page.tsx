@@ -58,6 +58,8 @@ export default async function JournalPage({
           userId={user.id}
           lovedOneId={lovedOne.id}
           promptId={prompt.id}
+          promptText={promptText}
+          lovedOneName={lovedOne.name}
         />
       </main>
     </div>
