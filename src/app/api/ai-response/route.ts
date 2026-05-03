@@ -1,6 +1,10 @@
 import { after } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { findCrisisPhrase } from '@/lib/crisis-detection'
 import OpenAI from 'openai'
+
+const CRISIS_MESSAGE =
+  "What you're carrying right now sounds incredibly heavy. You don't have to face this alone. Please reach out to the 988 Suicide and Crisis Lifeline — you can call or text 988 anytime, day or night. Real people are there to listen."
 
 const SYSTEM_PROMPT = `You are a warm, wise companion for The Good Grief Journal — someone who has experienced loss themselves and responds from the heart, not from a textbook.
 
@@ -32,6 +36,19 @@ export async function POST(request: Request) {
 
   if (!content || !journal_entry_id) {
     return new Response('Missing required fields', { status: 400 })
+  }
+
+  // Crisis detection takes priority over rate limiting and AI generation —
+  // if the entry contains crisis language, log it and return resources directly.
+  const crisisPhrase = findCrisisPhrase(content)
+  if (crisisPhrase) {
+    await supabase.from('crisis_events').insert({
+      user_id: user.id,
+      journal_entry_id,
+      trigger_phrase: crisisPhrase,
+    })
+
+    return Response.json({ crisis: true, message: CRISIS_MESSAGE })
   }
 
   // Rate limit: max 10 AI responses per user per day

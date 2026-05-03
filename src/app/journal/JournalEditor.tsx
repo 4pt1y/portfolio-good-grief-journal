@@ -13,7 +13,7 @@ type Props = {
 }
 
 type SaveStatus = 'idle' | 'saving' | 'saved'
-type AiPhase = 'idle' | 'streaming' | 'done'
+type AiPhase = 'idle' | 'streaming' | 'done' | 'crisis'
 
 function wordCount(text: string): number {
   return text.trim() ? text.trim().split(/\s+/).filter(Boolean).length : 0
@@ -26,6 +26,7 @@ export default function JournalEditor({ userId, lovedOneId, promptId, promptText
   const [finishing, setFinishing] = useState(false)
   const [aiPhase, setAiPhase] = useState<AiPhase>('idle')
   const [aiResponse, setAiResponse] = useState('')
+  const [crisisMessage, setCrisisMessage] = useState('')
 
   // Refs let the autosave interval always read the latest values without restarting
   const contentRef = useRef('')
@@ -136,6 +137,18 @@ export default function JournalEditor({ userId, lovedOneId, promptId, promptText
 
       if (!res.ok || !res.body) throw new Error('AI unavailable')
 
+      const contentType = res.headers.get('content-type') ?? ''
+      if (contentType.includes('application/json')) {
+        clearTimeout(timeout)
+        const data = await res.json() as { crisis?: boolean; message?: string }
+        if (data.crisis && data.message) {
+          setCrisisMessage(data.message)
+          setAiPhase('crisis')
+          return
+        }
+        throw new Error('Unexpected JSON response')
+      }
+
       const reader = res.body.getReader()
       const decoder = new TextDecoder()
 
@@ -154,6 +167,50 @@ export default function JournalEditor({ userId, lovedOneId, promptId, promptText
   }
 
   const wc = wordCount(content)
+
+  if (aiPhase === 'crisis') {
+    return (
+      <div className="space-y-6">
+        <div className="bg-white rounded-2xl border border-stone-200 shadow-sm p-8">
+          <p className="text-stone-700 text-base leading-relaxed whitespace-pre-wrap">
+            {content}
+          </p>
+        </div>
+
+        <div className="bg-amber-50 border border-amber-200 rounded-2xl p-8">
+          <p className="text-base text-stone-700 leading-relaxed font-serif whitespace-pre-wrap">
+            {crisisMessage}
+          </p>
+
+          <div className="mt-7 flex flex-col sm:flex-row gap-3">
+            <a
+              href="tel:988"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-stone-800 text-white rounded-xl text-sm font-medium hover:bg-stone-700 transition-colors"
+            >
+              Call or text 988
+            </a>
+            <a
+              href="https://988lifeline.org/chat/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-5 py-3 border border-stone-300 bg-white text-stone-700 rounded-xl text-sm font-medium hover:border-stone-400 transition-colors"
+            >
+              Chat online at 988lifeline.org →
+            </a>
+          </div>
+
+          <div className="mt-7 pt-5 border-t border-amber-200">
+            <button
+              onClick={() => router.push('/dashboard')}
+              className="text-sm text-stone-500 hover:text-stone-800 transition-colors"
+            >
+              Continue to dashboard
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   if (aiPhase !== 'idle') {
     return (
