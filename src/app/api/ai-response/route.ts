@@ -73,29 +73,6 @@ export async function POST(request: Request) {
     }
   }
 
-  // Last 3 entries (excluding this one) for continuity context
-  const { data: recentEntries } = await supabase
-    .from('journal_entries')
-    .select('content, created_at')
-    .eq('user_id', user.id)
-    .neq('id', journal_entry_id)
-    .order('created_at', { ascending: false })
-    .limit(3)
-
-  const contextBlock =
-    recentEntries && recentEntries.length > 0
-      ? '\n\nRecent entries for context (oldest first):\n' +
-        [...recentEntries]
-          .reverse()
-          .map((e, i) => {
-            const preview = e.content.length > 400
-              ? e.content.slice(0, 400) + '…'
-              : e.content
-            return `Entry ${i + 1}: ${preview}`
-          })
-          .join('\n\n')
-      : ''
-
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
   let stream: AsyncIterable<OpenAI.Chat.Completions.ChatCompletionChunk>
@@ -104,7 +81,7 @@ export async function POST(request: Request) {
       model: 'gpt-4o-mini',
       stream: true,
       messages: [
-        { role: 'system', content: SYSTEM_PROMPT + contextBlock },
+        { role: 'system', content: SYSTEM_PROMPT },
         {
           role: 'user',
           content: `The journaling prompt was: "${prompt_text}"\n\nTheir entry about ${loved_one_name}:\n\n${content}`,
