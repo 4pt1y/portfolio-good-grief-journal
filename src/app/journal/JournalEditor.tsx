@@ -118,9 +118,13 @@ export default function JournalEditor({ userId, lovedOneId, promptId, promptText
 
     setAiPhase('streaming')
 
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 15_000)
+
     try {
       const res = await fetch('/api/ai-response', {
         method: 'POST',
+        signal: controller.signal,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           journal_entry_id: savedEntryId,
@@ -141,8 +145,10 @@ export default function JournalEditor({ userId, lovedOneId, promptId, promptText
         setAiResponse(prev => prev + decoder.decode(value, { stream: true }))
       }
 
+      clearTimeout(timeout)
       setAiPhase('done')
     } catch {
+      clearTimeout(timeout)
       router.push('/dashboard')
     }
   }
