@@ -158,7 +158,7 @@ export default function OnboardingPage() {
       </div>
 
       {/* Card */}
-      <div className="bg-white rounded-2xl shadow-sm border border-stone-200 p-8">
+      <div className="bg-white rounded-2xl shadow-sm border border-stone-200 p-6 sm:p-8">
         <p className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-2">
           Step {step} of {TOTAL_STEPS}
         </p>

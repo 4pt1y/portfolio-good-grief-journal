@@ -27,7 +27,7 @@ export default function PromptCard({ initialPrompt, lovedOneName, usedIds }: Pro
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-stone-200 shadow-sm p-8">
+    <div className="bg-white rounded-2xl border border-stone-200 shadow-sm p-6 sm:p-8">
       <div className="flex items-center gap-2 mb-5">
         <span className="text-xs font-medium text-stone-400 uppercase tracking-widest">
           Today&apos;s prompt

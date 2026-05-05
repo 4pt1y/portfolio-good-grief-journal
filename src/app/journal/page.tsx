@@ -37,14 +37,14 @@ export default async function JournalPage({
 
   return (
     <div className="min-h-screen bg-stone-50">
-      <nav className="bg-white border-b border-stone-200 px-6 py-4 flex justify-between items-center">
+      <nav className="bg-white border-b border-stone-200 px-4 sm:px-6 py-4 flex justify-between items-center">
         <a href="/dashboard" className="text-sm text-stone-500 hover:text-stone-800 transition-colors">
-          ← Back to journal
+          ← Back
         </a>
-        <span className="text-sm text-stone-400">{user.email}</span>
+        <span className="text-sm text-stone-400 hidden sm:block">{user.email}</span>
       </nav>
 
-      <main className="max-w-2xl mx-auto px-6 py-10">
+      <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
         <div className="bg-amber-50 border border-amber-100 rounded-2xl px-6 py-5 mb-8">
           <p className="text-xs font-medium text-amber-700 uppercase tracking-widest mb-2">
             Today's prompt

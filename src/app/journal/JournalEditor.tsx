@@ -249,7 +249,7 @@ export default function JournalEditor({ userId, lovedOneId, promptId, promptText
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-stone-200 shadow-sm p-8">
+    <div className="bg-white rounded-2xl border border-stone-200 shadow-sm p-4 sm:p-8">
       <textarea
         ref={textareaRef}
         value={content}
