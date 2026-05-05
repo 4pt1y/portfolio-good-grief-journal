@@ -19,11 +19,20 @@ export default async function PhotosPage() {
 
   if (!lovedOne) redirect('/onboarding')
 
-  const { data: photos } = await supabase
-    .from('photos')
-    .select('id, url, caption, taken_at, created_at')
-    .eq('user_id', user.id)
-    .order('created_at', { ascending: false })
+  const [{ data: allLovedOnes }, { data: photos }] = await Promise.all([
+    supabase
+      .from('loved_ones')
+      .select('id, name')
+      .eq('user_id', user.id)
+      .order('is_primary', { ascending: false }),
+    supabase
+      .from('photos')
+      .select('id, url, caption, taken_at, created_at, loved_one_id')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false }),
+  ])
+
+  const lovedOnes = allLovedOnes ?? []
 
   return (
     <div className="min-h-screen bg-stone-50">
@@ -49,15 +58,22 @@ export default async function PhotosPage() {
         </div>
       </nav>
 
-      <main className="max-w-2xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
-        <p className="text-sm text-stone-400 mb-1">Photos for</p>
-        <h2 className="text-3xl font-serif text-stone-800 mb-8">{lovedOne.name}</h2>
+      <main className="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
+        {lovedOnes.length > 1 ? (
+          <h2 className="text-3xl font-serif text-stone-800 mb-8">Photos</h2>
+        ) : (
+          <>
+            <p className="text-sm text-stone-400 mb-1">Photos for</p>
+            <h2 className="text-3xl font-serif text-stone-800 mb-8">{lovedOne.name}</h2>
+          </>
+        )}
 
         <PhotoUploader
           userId={user.id}
           lovedOneId={lovedOne.id}
           lovedOneName={lovedOne.name}
           initialPhotos={(photos ?? []) as Photo[]}
+          lovedOnes={lovedOnes}
         />
       </main>
     </div>
