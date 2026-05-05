@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 import JournalEditor from './JournalEditor'
 
 export default async function JournalPage({
@@ -41,7 +42,16 @@ export default async function JournalPage({
         <a href="/dashboard" className="text-sm text-stone-500 hover:text-stone-800 transition-colors">
           ← Back
         </a>
-        <span className="text-sm text-stone-400 hidden sm:block">{user.email}</span>
+        <div className="flex items-center gap-2 sm:gap-4">
+          <Link
+            href="/photos"
+            className="text-sm text-stone-500 hover:text-stone-800 transition-colors hidden sm:inline"
+          >
+            Photos
+          </Link>
+          <span className="text-stone-200 select-none hidden sm:inline">|</span>
+          <span className="text-sm text-stone-400 hidden sm:block">{user.email}</span>
+        </div>
       </nav>
 
       <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-10">

@@ -25,6 +25,7 @@ export default function OnboardingPage() {
 
   const [photo, setPhoto] = useState<File | null>(null)
   const [photoPreview, setPhotoPreview] = useState<string | null>(null)
+  const [dragOver, setDragOver] = useState(false)
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -33,11 +34,26 @@ export default function OnboardingPage() {
   const router = useRouter()
   const supabase = createClient()
 
+  function setPhotoFile(f: File) {
+    setPhoto(f)
+    setPhotoPreview(URL.createObjectURL(f))
+  }
+
   function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    if (!file) return
-    setPhoto(file)
-    setPhotoPreview(URL.createObjectURL(file))
+    const f = e.target.files?.[0]
+    if (f) setPhotoFile(f)
+  }
+
+  function handlePhotoDrop(e: React.DragEvent) {
+    e.preventDefault()
+    setDragOver(false)
+    const f = e.dataTransfer.files[0]
+    if (f) setPhotoFile(f)
+  }
+
+  function handlePhotoDragOver(e: React.DragEvent) {
+    e.preventDefault()
+    setDragOver(true)
   }
 
   function handleNext() {
@@ -82,19 +98,19 @@ export default function OnboardingPage() {
     let photoUrl: string | null = null
     if (photo) {
       const ext = photo.name.split('.').pop()
-      const path = `${user.id}/${Date.now()}.${ext}`
+      const path = `${user.id}/${crypto.randomUUID()}.${ext}`
       const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('loved-ones')
+        .from('photos')
         .upload(path, photo)
       if (!uploadError && uploadData) {
         const { data: { publicUrl } } = supabase.storage
-          .from('loved-ones')
+          .from('photos')
           .getPublicUrl(uploadData.path)
         photoUrl = publicUrl
       }
     }
 
-    const { error: insertError } = await supabase
+    const { data: lovedOneData, error: insertError } = await supabase
       .from('loved_ones')
       .insert({
         user_id: user.id,
@@ -106,11 +122,24 @@ export default function OnboardingPage() {
         photo_url: photoUrl,
         is_primary: true,
       })
+      .select('id')
+      .single()
 
-    if (insertError) {
+    if (insertError || !lovedOneData) {
       setError('Something went wrong. Please try again.')
       setLoading(false)
       return
+    }
+
+    // Mirror the photo to the photos table so it appears on the photos page
+    if (photoUrl) {
+      await supabase.from('photos').insert({
+        user_id: user.id,
+        loved_one_id: lovedOneData.id,
+        url: photoUrl,
+        thumbnail_url: photoUrl,
+        taken_at: null,
+      })
     }
 
     router.push('/dashboard')
@@ -276,40 +305,54 @@ export default function OnboardingPage() {
               <input
                 ref={fileInputRef}
                 type="file"
-                accept="image/*"
+                accept="image/jpeg,image/png,image/webp"
                 onChange={handlePhotoChange}
                 className="hidden"
               />
               {photoPreview ? (
-                <div className="flex items-center gap-4">
+                <div className="bg-white rounded-xl border border-stone-200 overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={photoPreview}
                     alt="Preview"
-                    className="w-20 h-20 rounded-full object-cover border-2 border-stone-200"
+                    className="w-full object-cover max-h-56"
                   />
-                  <div className="flex flex-col gap-1">
-                    <span className="text-sm text-stone-600">{photo?.name}</span>
+                  <div className="px-4 py-3 border-t border-stone-100 flex items-center justify-between gap-4">
+                    <span className="text-xs text-stone-400 truncate">{photo?.name}</span>
                     <button
                       type="button"
                       onClick={() => { setPhoto(null); setPhotoPreview(null) }}
-                      className="text-xs text-stone-400 hover:text-stone-600 text-left"
+                      className="text-xs text-stone-400 hover:text-stone-700 transition-colors shrink-0"
                     >
-                      Remove photo
+                      Remove
                     </button>
                   </div>
                 </div>
               ) : (
-                <button
-                  type="button"
+                <div
+                  onDrop={handlePhotoDrop}
+                  onDragOver={handlePhotoDragOver}
+                  onDragLeave={() => setDragOver(false)}
                   onClick={() => fileInputRef.current?.click()}
-                  className="w-full py-8 border-2 border-dashed border-stone-200 rounded-xl text-sm text-stone-400 hover:border-stone-300 hover:text-stone-500 transition-colors flex flex-col items-center gap-2"
+                  className={`
+                    border-2 border-dashed rounded-2xl py-12 flex flex-col items-center justify-center gap-3
+                    cursor-pointer select-none transition-colors
+                    ${dragOver
+                      ? 'border-stone-400 bg-stone-100'
+                      : 'border-stone-200 hover:border-stone-300 hover:bg-stone-50'
+                    }
+                  `}
                 >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                  <svg className="w-7 h-7 text-stone-300" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0l-3 3m3-3l3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.338-2.32 5.75 5.75 0 011.99 11.097" />
                   </svg>
-                  <span>Upload a photo <span className="text-stone-300">(optional)</span></span>
-                </button>
+                  <div className="text-center">
+                    <p className="text-sm text-stone-500">
+                      {dragOver ? 'Drop photo here' : 'Drag a photo here, or click to browse'}
+                    </p>
+                    <p className="text-xs text-stone-400 mt-1">Optional</p>
+                  </div>
+                </div>
               )}
             </div>
           </div>
