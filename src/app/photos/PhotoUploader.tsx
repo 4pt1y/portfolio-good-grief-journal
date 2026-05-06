@@ -222,6 +222,22 @@ export default function PhotoUploader({
       return
     }
 
+    // Auto-fill the loved one's profile photo from the first upload, so the
+    // dashboard / memory-book thumbnails populate without a separate step.
+    // Atomic: the row only changes when photo_url is still null/empty AND
+    // this is the primary loved one — a no-op otherwise.
+    const { error: thumbnailErr } = await supabase
+      .from('loved_ones')
+      .update({ photo_url: publicUrl })
+      .eq('id', lovedOneId)
+      .eq('is_primary', true)
+      .or('photo_url.is.null,photo_url.eq.""')
+
+    // Non-fatal: the upload itself succeeded, so don't surface this to the user.
+    if (thumbnailErr) {
+      console.warn('Could not auto-set loved_one photo_url:', thumbnailErr)
+    }
+
     setPhotos(prev => [newPhoto as Photo, ...prev])
     setUploading(false)
     resetUpload()

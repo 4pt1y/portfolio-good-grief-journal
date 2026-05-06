@@ -129,6 +129,13 @@ export default async function DashboardPage() {
             Photos
           </Link>
           <span className="text-stone-200 select-none hidden sm:inline">|</span>
+          <Link
+            href="/memory-book"
+            className="text-sm text-stone-500 hover:text-stone-800 transition-colors hidden sm:inline"
+          >
+            Memory Book
+          </Link>
+          <span className="text-stone-200 select-none hidden sm:inline">|</span>
           <span className="text-sm text-stone-400 hidden sm:inline">{user.email}</span>
           <SignOutButton />
         </div>

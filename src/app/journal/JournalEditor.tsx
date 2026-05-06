@@ -12,7 +12,7 @@ type Props = {
   lovedOneName: string
 }
 
-type SaveStatus = 'idle' | 'saving' | 'saved'
+type SaveStatus = 'idle' | 'saving' | 'saved' | 'error'
 type AiPhase = 'idle' | 'streaming' | 'done' | 'crisis'
 
 function wordCount(text: string): number {
@@ -77,8 +77,14 @@ export default function JournalEditor({ userId, lovedOneId, promptId, promptText
     }
 
     savingRef.current = false
-    setSaveStatus('saved')
-    setTimeout(() => setSaveStatus('idle'), 2000)
+    if (ok) {
+      setSaveStatus('saved')
+      setTimeout(() => setSaveStatus('idle'), 2000)
+    } else {
+      // Stay pinned in 'error' until the next save attempt resolves —
+      // the 30s autosave will retry on its own (and so will Save & finish).
+      setSaveStatus('error')
+    }
     return ok
   }, [supabase, userId, lovedOneId, promptId])
 
@@ -109,7 +115,15 @@ export default function JournalEditor({ userId, lovedOneId, promptId, promptText
 
   async function handleFinish() {
     setFinishing(true)
-    if (content.trim()) await performSave()
+    if (content.trim()) {
+      const ok = await performSave()
+      if (!ok) {
+        // performSave already pinned saveStatus to 'error' so the inline
+        // message is visible; stop here so we don't redirect with unsaved work.
+        setFinishing(false)
+        return
+      }
+    }
 
     const savedEntryId = entryIdRef.current
     if (!savedEntryId) {
@@ -269,6 +283,11 @@ export default function JournalEditor({ userId, lovedOneId, promptId, promptText
           )}
           {saveStatus === 'saved' && (
             <span className="text-xs text-emerald-600">Saved</span>
+          )}
+          {saveStatus === 'error' && (
+            <span className="text-xs text-amber-700">
+              Couldn&apos;t save — we&apos;ll try again
+            </span>
           )}
         </div>
 
