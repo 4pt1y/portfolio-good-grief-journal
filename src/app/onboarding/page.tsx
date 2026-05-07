@@ -164,10 +164,10 @@ export default function OnboardingPage() {
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${
                   isActive
-                    ? 'bg-stone-800 text-white'
+                    ? 'bg-brand-navy text-white'
                     : isDone
-                    ? 'bg-stone-400 text-white'
-                    : 'border border-stone-300 text-stone-400'
+                    ? 'bg-brand-slate text-white'
+                    : 'border border-brand-periwinkle text-brand-slate'
                 }`}
               >
                 {isDone ? (
@@ -179,7 +179,7 @@ export default function OnboardingPage() {
                 )}
               </div>
               {n < TOTAL_STEPS && (
-                <div className={`w-10 h-px ${n < step ? 'bg-stone-400' : 'bg-stone-200'}`} />
+                <div className={`w-10 h-px ${n < step ? 'bg-brand-slate' : 'bg-brand-periwinkle'}`} />
               )}
             </div>
           )
@@ -187,12 +187,12 @@ export default function OnboardingPage() {
       </div>
 
       {/* Card */}
-      <div className="bg-white rounded-2xl shadow-sm border border-stone-200 p-6 sm:p-8">
-        <p className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-2">
+      <div className="bg-white rounded-2xl shadow-sm border border-brand-periwinkle p-6 sm:p-8">
+        <p className="text-xs font-medium text-brand-slate uppercase tracking-widest mb-2">
           Step {step} of {TOTAL_STEPS}
         </p>
         <h1
-          className="text-2xl text-stone-800 mb-1"
+          className="text-2xl text-brand-navy mb-1"
           style={{ fontFamily: 'var(--font-lora), Georgia, serif' }}
         >
           {stepTitles[step - 1]}
@@ -217,7 +217,7 @@ export default function OnboardingPage() {
                 value={name}
                 onChange={e => setName(e.target.value)}
                 placeholder="e.g. Margaret, Dad, Nana"
-                className="w-full px-4 py-3 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-stone-300 placeholder:text-stone-300"
+                className="w-full px-4 py-3 rounded-xl border border-brand-periwinkle text-sm focus:outline-none focus:ring-2 focus:ring-brand-periwinkle placeholder:text-stone-300"
               />
             </div>
             <div>
@@ -227,7 +227,7 @@ export default function OnboardingPage() {
               <select
                 value={relationship}
                 onChange={e => setRelationship(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-stone-300 text-stone-700 bg-white appearance-none"
+                className="w-full px-4 py-3 rounded-xl border border-brand-periwinkle text-sm focus:outline-none focus:ring-2 focus:ring-brand-periwinkle text-stone-700 bg-white appearance-none"
               >
                 <option value="">Select a relationship…</option>
                 {RELATIONSHIPS.map(r => (
@@ -247,8 +247,8 @@ export default function OnboardingPage() {
                     onClick={() => setPronouns(pronouns === p ? '' : p)}
                     className={`px-4 py-2 rounded-xl text-sm border transition-colors ${
                       pronouns === p
-                        ? 'bg-stone-800 text-white border-stone-800'
-                        : 'border-stone-200 text-stone-600 hover:border-stone-400'
+                        ? 'bg-brand-navy text-white border-brand-navy'
+                        : 'border-brand-periwinkle text-brand-slate hover:border-brand-slate'
                     }`}
                   >
                     {p}
@@ -276,7 +276,7 @@ export default function OnboardingPage() {
                 type="date"
                 value={dateOfPassing}
                 onChange={e => setDateOfPassing(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-stone-300 text-stone-700"
+                className="w-full px-4 py-3 rounded-xl border border-brand-periwinkle text-sm focus:outline-none focus:ring-2 focus:ring-brand-periwinkle text-stone-700"
               />
             </div>
             <div>
@@ -287,7 +287,7 @@ export default function OnboardingPage() {
                 type="date"
                 value={dateOfBirth}
                 onChange={e => setDateOfBirth(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-stone-300 text-stone-700"
+                className="w-full px-4 py-3 rounded-xl border border-brand-periwinkle text-sm focus:outline-none focus:ring-2 focus:ring-brand-periwinkle text-stone-700"
               />
             </div>
           </div>
@@ -310,7 +310,7 @@ export default function OnboardingPage() {
                 className="hidden"
               />
               {photoPreview ? (
-                <div className="bg-white rounded-xl border border-stone-200 overflow-hidden">
+                <div className="bg-white rounded-xl border border-brand-periwinkle overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={photoPreview}
@@ -365,7 +365,7 @@ export default function OnboardingPage() {
               type="button"
               onClick={handleBack}
               disabled={loading}
-              className="px-5 py-2.5 border border-stone-200 text-stone-600 rounded-xl text-sm font-medium hover:bg-stone-50 disabled:opacity-50 transition-colors"
+              className="px-5 py-2.5 border border-brand-navy text-brand-navy rounded-xl text-sm font-medium hover:bg-brand-blush disabled:opacity-50 transition-colors"
             >
               ← Back
             </button>
@@ -374,7 +374,7 @@ export default function OnboardingPage() {
             <button
               type="button"
               onClick={handleNext}
-              className="px-5 py-2.5 bg-stone-800 text-white rounded-xl text-sm font-medium hover:bg-stone-700 transition-colors"
+              className="px-5 py-2.5 bg-brand-navy text-white rounded-xl text-sm font-medium hover:bg-brand-slate transition-colors"
             >
               Next →
             </button>
@@ -383,7 +383,7 @@ export default function OnboardingPage() {
               type="button"
               onClick={handleComplete}
               disabled={loading}
-              className="px-6 py-2.5 bg-stone-800 text-white rounded-xl text-sm font-medium hover:bg-stone-700 disabled:opacity-50 transition-colors"
+              className="px-6 py-2.5 bg-brand-navy text-white rounded-xl text-sm font-medium hover:bg-brand-slate disabled:opacity-50 transition-colors"
             >
               {loading ? 'Creating your journal…' : 'Create my journal'}
             </button>

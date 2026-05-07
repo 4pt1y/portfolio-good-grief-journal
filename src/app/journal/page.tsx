@@ -37,20 +37,20 @@ export default async function JournalPage({
   const promptText = prompt.text.replace(/\{name\}/g, lovedOne.name)
 
   return (
-    <div className="min-h-screen bg-stone-50">
-      <nav className="bg-white border-b border-stone-200 px-4 sm:px-6 py-4 flex justify-between items-center">
-        <a href="/dashboard" className="text-sm text-stone-500 hover:text-stone-800 transition-colors">
+    <div className="min-h-screen bg-white">
+      <nav className="bg-brand-blush border-b border-brand-periwinkle px-4 sm:px-6 py-4 flex justify-between items-center">
+        <a href="/dashboard" className="text-sm text-brand-slate hover:text-brand-navy transition-colors">
           ← Back
         </a>
         <div className="flex items-center gap-2 sm:gap-4">
           <Link
             href="/photos"
-            className="text-sm text-stone-500 hover:text-stone-800 transition-colors hidden sm:inline"
+            className="text-sm text-brand-slate hover:text-brand-navy transition-colors hidden sm:inline"
           >
             Photos
           </Link>
-          <span className="text-stone-200 select-none hidden sm:inline">|</span>
-          <span className="text-sm text-stone-400 hidden sm:block">{user.email}</span>
+          <span className="text-brand-periwinkle select-none hidden sm:inline">|</span>
+          <span className="text-sm text-brand-slate hidden sm:block">{user.email}</span>
         </div>
       </nav>
 

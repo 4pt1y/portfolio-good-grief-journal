@@ -44,7 +44,7 @@ export default function PromptCard({ initialPrompt, lovedOneName, usedIds }: Pro
       </p>
       <Link
         href={`/journal?prompt_id=${prompt.id}`}
-        className="inline-block px-6 py-3 bg-stone-800 text-white rounded-xl text-sm font-medium hover:bg-stone-700 transition-colors"
+        className="inline-block px-6 py-3 bg-brand-navy text-white rounded-xl text-sm font-medium hover:bg-brand-slate transition-colors"
       >
         Start journaling
       </Link>

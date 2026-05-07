@@ -41,10 +41,15 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-stone-50 px-4">
-      <div className="w-full max-w-md p-6 sm:p-8 bg-white rounded-2xl shadow-sm border border-stone-200">
-        <h1 className="text-2xl font-serif text-stone-800 mb-2">Welcome back</h1>
-        <p className="text-stone-500 text-sm mb-8">Sign in to your journal</p>
+    <div className="min-h-screen flex items-center justify-center bg-white px-4">
+      <div className="w-full max-w-md p-6 sm:p-8 bg-white rounded-2xl shadow-sm border border-brand-periwinkle">
+        <div className="w-full flex flex-col items-center mb-8">
+          <p className="text-xs tracking-[0.3em] text-brand-slate uppercase mb-1">The</p>
+          <h1 className="text-4xl font-bold text-brand-navy tracking-wide leading-none">Good Grief</h1>
+          <p className="text-sm tracking-[0.25em] text-brand-mauve uppercase mt-1">Journal</p>
+        </div>
+        <h1 className="text-2xl font-serif text-brand-navy mb-2">Welcome back</h1>
+        <p className="text-brand-slate text-sm mb-8">Sign in to your journal</p>
 
         {error && (
           <p className={`text-sm mb-4 ${error.includes('Check') ? 'text-green-600' : 'text-red-500'}`}>
@@ -58,26 +63,26 @@ export default function LoginPage() {
             placeholder="Email"
             value={email}
             onChange={e => setEmail(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-mauve-300"
+            className="w-full px-4 py-3 rounded-xl border border-brand-periwinkle text-sm focus:outline-none focus:ring-2 focus:ring-brand-periwinkle"
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={e => setPassword(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-mauve-300"
+            className="w-full px-4 py-3 rounded-xl border border-brand-periwinkle text-sm focus:outline-none focus:ring-2 focus:ring-brand-periwinkle"
           />
           <button
             onClick={handleLogin}
             disabled={loading}
-            className="w-full py-3 bg-stone-800 text-white rounded-xl text-sm font-medium hover:bg-stone-700 disabled:opacity-50"
+            className="w-full py-3 bg-brand-navy text-white rounded-xl text-sm font-medium hover:bg-brand-slate disabled:opacity-50"
           >
             {loading ? 'Signing in...' : 'Sign in'}
           </button>
           <button
             onClick={handleMagicLink}
             disabled={loading}
-            className="w-full py-3 border border-stone-200 text-stone-600 rounded-xl text-sm font-medium hover:bg-stone-50 disabled:opacity-50"
+            className="w-full py-3 border border-brand-navy text-brand-navy rounded-xl text-sm font-medium hover:bg-brand-blush disabled:opacity-50"
           >
             Send magic link instead
           </button>
@@ -85,7 +90,7 @@ export default function LoginPage() {
 
         <p className="text-center text-sm text-stone-500 mt-6">
           Don't have an account?{' '}
-          <Link href="/signup" className="text-stone-800 font-medium hover:underline">
+          <Link href="/signup" className="text-brand-navy font-medium hover:underline">
             Sign up
           </Link>
         </p>

@@ -199,7 +199,7 @@ export default function JournalEditor({ userId, lovedOneId, promptId, promptText
           <div className="mt-7 flex flex-col sm:flex-row gap-3">
             <a
               href="tel:988"
-              className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-stone-800 text-white rounded-xl text-sm font-medium hover:bg-stone-700 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-brand-navy text-white rounded-xl text-sm font-medium hover:bg-brand-slate transition-colors"
             >
               Call or text 988
             </a>
@@ -207,7 +207,7 @@ export default function JournalEditor({ userId, lovedOneId, promptId, promptText
               href="https://988lifeline.org/chat/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-5 py-3 border border-stone-300 bg-white text-stone-700 rounded-xl text-sm font-medium hover:border-stone-400 transition-colors"
+              className="inline-flex items-center justify-center px-5 py-3 border border-brand-navy bg-white text-brand-navy rounded-xl text-sm font-medium hover:bg-brand-blush transition-colors"
             >
               Chat online at 988lifeline.org →
             </a>
@@ -251,7 +251,7 @@ export default function JournalEditor({ userId, lovedOneId, promptId, promptText
             <div className="mt-6 pt-5 border-t border-amber-200">
               <button
                 onClick={() => router.push('/dashboard')}
-                className="px-5 py-2.5 bg-stone-800 text-white rounded-xl text-sm font-medium hover:bg-stone-700 transition-colors"
+                className="px-5 py-2.5 bg-brand-navy text-white rounded-xl text-sm font-medium hover:bg-brand-slate transition-colors"
               >
                 Continue to dashboard
               </button>
@@ -294,7 +294,7 @@ export default function JournalEditor({ userId, lovedOneId, promptId, promptText
         <button
           onClick={handleFinish}
           disabled={finishing || !content.trim()}
-          className="px-5 py-2.5 bg-stone-800 text-white rounded-xl text-sm font-medium hover:bg-stone-700 disabled:opacity-40 transition-colors"
+          className="px-5 py-2.5 bg-brand-navy text-white rounded-xl text-sm font-medium hover:bg-brand-slate disabled:opacity-40 transition-colors"
         >
           {finishing ? 'Saving…' : 'Save & finish'}
         </button>

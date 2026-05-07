@@ -111,39 +111,40 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-50">
-      <nav className="bg-white border-b border-stone-200 px-4 sm:px-6 py-4 flex justify-between items-center">
-        <h1 className="text-lg font-serif text-stone-800">The Good Grief Journal</h1>
+    <div className="min-h-screen bg-white">
+      <nav className="bg-brand-blush border-b border-brand-periwinkle px-4 sm:px-6 py-4 flex justify-between items-center">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/logos/logo-nav.png" alt="The Good Grief Journal" className="h-12 w-auto object-contain" style={{ clipPath: 'inset(0 8px 0 0)' }} />
         <div className="flex items-center gap-2 sm:gap-4">
           <Link
             href="/journal/history"
-            className="text-sm text-stone-500 hover:text-stone-800 transition-colors"
+            className="text-sm text-brand-slate hover:text-brand-navy transition-colors"
           >
             Past entries
           </Link>
-          <span className="text-stone-200 select-none hidden sm:inline">|</span>
+          <span className="text-brand-periwinkle select-none hidden sm:inline">|</span>
           <Link
             href="/photos"
-            className="text-sm text-stone-500 hover:text-stone-800 transition-colors hidden sm:inline"
+            className="text-sm text-brand-slate hover:text-brand-navy transition-colors hidden sm:inline"
           >
             Photos
           </Link>
-          <span className="text-stone-200 select-none hidden sm:inline">|</span>
+          <span className="text-brand-periwinkle select-none hidden sm:inline">|</span>
           <Link
             href="/memory-book"
-            className="text-sm text-stone-500 hover:text-stone-800 transition-colors hidden sm:inline"
+            className="text-sm text-brand-slate hover:text-brand-navy transition-colors hidden sm:inline"
           >
             Memory Book
           </Link>
-          <span className="text-stone-200 select-none hidden sm:inline">|</span>
-          <span className="text-sm text-stone-400 hidden sm:inline">{user.email}</span>
+          <span className="text-brand-periwinkle select-none hidden sm:inline">|</span>
+          <span className="text-sm text-brand-slate hidden sm:inline">{user.email}</span>
           <SignOutButton />
         </div>
       </nav>
 
       <main className="max-w-2xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
-        <p className="text-sm text-stone-400 mb-1">Journaling for</p>
-        <h2 className="text-3xl font-serif text-stone-800 mb-8 sm:mb-10">{lovedOne.name}</h2>
+        <p className="text-sm text-brand-slate mb-1">Journaling for</p>
+        <h2 className="text-3xl font-serif text-brand-navy mb-8 sm:mb-10">{lovedOne.name}</h2>
 
         {promptRow && promptText ? (
           <PromptCard

@@ -167,7 +167,7 @@ export default function MemoryBookList({ userId, items }: Props) {
                     href={status.downloadUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="px-4 py-2 bg-stone-800 text-white rounded-xl text-sm font-medium hover:bg-stone-700 transition-colors text-center"
+                    className="px-4 py-2 bg-brand-navy text-white rounded-xl text-sm font-medium hover:bg-brand-slate transition-colors text-center"
                   >
                     Download
                   </a>
@@ -183,7 +183,7 @@ export default function MemoryBookList({ userId, items }: Props) {
                 <button
                   onClick={() => generate(it)}
                   disabled={cannotGenerate}
-                  className="px-4 py-2 bg-stone-800 text-white rounded-xl text-sm font-medium hover:bg-stone-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="px-4 py-2 bg-brand-navy text-white rounded-xl text-sm font-medium hover:bg-brand-slate disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   Try again
                 </button>
@@ -191,7 +191,7 @@ export default function MemoryBookList({ userId, items }: Props) {
                 <button
                   onClick={() => generate(it)}
                   disabled={cannotGenerate}
-                  className="px-4 py-2 bg-stone-800 text-white rounded-xl text-sm font-medium hover:bg-stone-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="px-4 py-2 bg-brand-navy text-white rounded-xl text-sm font-medium hover:bg-brand-slate disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   Generate
                 </button>

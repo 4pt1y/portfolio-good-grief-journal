@@ -30,10 +30,15 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-stone-50 px-4">
-      <div className="w-full max-w-md p-6 sm:p-8 bg-white rounded-2xl shadow-sm border border-stone-200">
-        <h1 className="text-2xl font-serif text-stone-800 mb-2">Begin your journey</h1>
-        <p className="text-stone-500 text-sm mb-8">Create your grief journal</p>
+    <div className="min-h-screen flex items-center justify-center bg-white px-4">
+      <div className="w-full max-w-md p-6 sm:p-8 bg-white rounded-2xl shadow-sm border border-brand-periwinkle">
+        <div className="w-full flex flex-col items-center mb-8">
+          <p className="text-xs tracking-[0.3em] text-brand-slate uppercase mb-1">The</p>
+          <h1 className="text-4xl font-bold text-brand-navy tracking-wide leading-none">Good Grief</h1>
+          <p className="text-sm tracking-[0.25em] text-brand-mauve uppercase mt-1">Journal</p>
+        </div>
+        <h1 className="text-2xl font-serif text-brand-navy mb-2">Begin your journey</h1>
+        <p className="text-brand-slate text-sm mb-8">Create your grief journal</p>
 
         {error && (
           <p className="text-sm text-red-500 mb-4">{error}</p>
@@ -45,19 +50,19 @@ export default function SignupPage() {
             placeholder="Email"
             value={email}
             onChange={e => setEmail(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-stone-300"
+            className="w-full px-4 py-3 rounded-xl border border-brand-periwinkle text-sm focus:outline-none focus:ring-2 focus:ring-brand-periwinkle"
           />
           <input
             type="password"
             placeholder="Password (min 6 characters)"
             value={password}
             onChange={e => setPassword(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-stone-300"
+            className="w-full px-4 py-3 rounded-xl border border-brand-periwinkle text-sm focus:outline-none focus:ring-2 focus:ring-brand-periwinkle"
           />
           <button
             onClick={handleSignup}
             disabled={loading}
-            className="w-full py-3 bg-stone-800 text-white rounded-xl text-sm font-medium hover:bg-stone-700 disabled:opacity-50"
+            className="w-full py-3 bg-brand-navy text-white rounded-xl text-sm font-medium hover:bg-brand-slate disabled:opacity-50"
           >
             {loading ? 'Creating account...' : 'Create account'}
           </button>
@@ -65,7 +70,7 @@ export default function SignupPage() {
 
         <p className="text-center text-sm text-stone-500 mt-6">
           Already have an account?{' '}
-          <Link href="/login" className="text-stone-800 font-medium hover:underline">
+          <Link href="/login" className="text-brand-navy font-medium hover:underline">
             Sign in
           </Link>
         </p>

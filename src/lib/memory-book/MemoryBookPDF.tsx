@@ -12,20 +12,20 @@ const SERIF_ITALIC = 'Times-Italic'
 Font.registerHyphenationCallback((word) => [word])
 
 const COLORS = {
-  cream: '#f5efe6',
-  creamSoft: '#fdfaf5',
-  ink: '#292524',
-  body: '#44403c',
-  muted: '#78716c',
-  faint: '#a8a29e',
-  accent: '#a89788',
-  divider: '#e7e5e4',
+  cream: '#f7e8f2',
+  creamSoft: '#f7e8f2',
+  ink: '#3a3462',
+  body: '#48598a',
+  muted: '#48598a',
+  faint: '#b1c2e4',
+  accent: '#d69ac6',
+  divider: '#b1c2e4',
 } as const
 
 const styles = StyleSheet.create({
   // Cover
   coverPage: {
-    backgroundColor: COLORS.cream,
+    backgroundColor: '#ffffff',
     padding: 60,
     flexDirection: 'column',
     justifyContent: 'center',
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
 
   // Body pages (intro, entries, photos, closing)
   page: {
-    backgroundColor: COLORS.creamSoft,
+    backgroundColor: '#ffffff',
     paddingTop: 56,
     paddingBottom: 56,
     paddingHorizontal: 64,
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
 
   // Closing
   closingPage: {
-    backgroundColor: COLORS.cream,
+    backgroundColor: '#ffffff',
     padding: 60,
     flexDirection: 'column',
     justifyContent: 'center',

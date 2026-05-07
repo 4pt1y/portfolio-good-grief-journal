@@ -386,7 +386,7 @@ export default function PhotoUploader({
             <button
               onClick={handleUpload}
               disabled={uploading}
-              className="w-full py-3 bg-stone-800 text-white rounded-xl text-sm font-medium hover:bg-stone-700 disabled:opacity-50 transition-colors"
+              className="w-full py-3 bg-brand-navy text-white rounded-xl text-sm font-medium hover:bg-brand-slate disabled:opacity-50 transition-colors"
             >
               {uploading ? (
                 <span className="flex items-center justify-center gap-2">
@@ -572,14 +572,14 @@ export default function PhotoUploader({
                     <button
                       onClick={handleSaveEdit}
                       disabled={isSaving}
-                      className="px-4 py-2 bg-stone-800 text-white rounded-lg text-xs font-medium hover:bg-stone-700 disabled:opacity-50 transition-colors"
+                      className="px-4 py-2 bg-brand-navy text-white rounded-lg text-xs font-medium hover:bg-brand-slate disabled:opacity-50 transition-colors"
                     >
                       {isSaving ? 'Saving…' : 'Save'}
                     </button>
                     <button
                       onClick={() => { setIsEditing(false); setEditSaved(false) }}
                       disabled={isSaving}
-                      className="px-4 py-2 border border-stone-200 text-stone-600 rounded-lg text-xs font-medium hover:bg-stone-50 disabled:opacity-50 transition-colors"
+                      className="px-4 py-2 border border-brand-navy text-brand-navy rounded-lg text-xs font-medium hover:bg-brand-blush disabled:opacity-50 transition-colors"
                     >
                       Cancel
                     </button>
@@ -607,14 +607,14 @@ export default function PhotoUploader({
               <button
                 onClick={() => { setDeletingId(null); setDeleteError('') }}
                 disabled={isDeleting}
-                className="flex-1 py-2.5 border border-stone-200 text-stone-600 rounded-xl text-sm font-medium hover:bg-stone-50 disabled:opacity-50 transition-colors"
+                className="flex-1 py-2.5 border border-brand-navy text-brand-navy rounded-xl text-sm font-medium hover:bg-brand-blush disabled:opacity-50 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDeleteConfirm}
                 disabled={isDeleting}
-                className="flex-1 py-2.5 bg-stone-800 text-white rounded-xl text-sm font-medium hover:bg-stone-700 disabled:opacity-50 transition-colors"
+                className="flex-1 py-2.5 bg-brand-navy text-white rounded-xl text-sm font-medium hover:bg-brand-slate disabled:opacity-50 transition-colors"
               >
                 {isDeleting ? 'Deleting…' : 'Delete'}
               </button>
