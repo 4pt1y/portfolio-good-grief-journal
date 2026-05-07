@@ -1,7 +1,7 @@
 import { after } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { findCrisisPhrase } from '@/lib/crisis-detection'
-import OpenAI from 'openai'
+import Anthropic from '@anthropic-ai/sdk'
 
 const CRISIS_MESSAGE =
   "What you're carrying right now sounds incredibly heavy. You don't have to face this alone. Please reach out to the 988 Suicide and Crisis Lifeline — you can call or text 988 anytime, day or night. Real people are there to listen."
@@ -73,15 +73,15 @@ export async function POST(request: Request) {
     }
   }
 
-  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
-  let stream: AsyncIterable<OpenAI.Chat.Completions.ChatCompletionChunk>
+  let stream: ReturnType<typeof anthropic.messages.stream>
   try {
-    stream = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      stream: true,
+    stream = anthropic.messages.stream({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 1024,
+      system: SYSTEM_PROMPT,
       messages: [
-        { role: 'system', content: SYSTEM_PROMPT },
         {
           role: 'user',
           content: `The journaling prompt was: "${prompt_text}"\n\nTheir entry about ${loved_one_name}:\n\n${content}`,
@@ -99,10 +99,12 @@ export async function POST(request: Request) {
     async start(controller) {
       try {
         for await (const chunk of stream) {
-          const text = chunk.choices[0]?.delta?.content ?? ''
-          if (text) {
-            fullText += text
-            controller.enqueue(encoder.encode(text))
+          if (chunk.type === 'content_block_delta' && chunk.delta.type === 'text_delta') {
+            const text = chunk.delta.text
+            if (text) {
+              fullText += text
+              controller.enqueue(encoder.encode(text))
+            }
           }
         }
       } finally {
@@ -117,7 +119,7 @@ export async function POST(request: Request) {
     await db.from('ai_responses').insert({
       journal_entry_id,
       content: fullText,
-      model_used: 'gpt-4o-mini',
+      model_used: 'claude-haiku-4-5',
     })
   })
 
