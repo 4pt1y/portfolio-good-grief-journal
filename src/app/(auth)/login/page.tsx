@@ -47,8 +47,8 @@ export default function LoginPage() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logos/logo-horizontal.svg" alt="The Good Grief Journal" className="w-3/4 max-w-xs h-auto -mb-8" />
         </div>
-        <h1 className="text-2xl font-serif text-brand-navy mb-2">Welcome back</h1>
-        <p className="text-brand-slate text-sm mb-8">Sign in to your journal</p>
+        <h1 className="text-2xl font-serif text-brand-navy mb-2 text-center">Welcome back</h1>
+        <p className="text-brand-slate text-sm mb-8 text-center">Sign in to your journal</p>
 
         {error && (
           <p className={`text-sm mb-4 ${error.includes('Check') ? 'text-green-600' : 'text-red-500'}`}>
@@ -62,14 +62,14 @@ export default function LoginPage() {
             placeholder="Email"
             value={email}
             onChange={e => setEmail(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border border-brand-periwinkle text-sm focus:outline-none focus:ring-2 focus:ring-brand-periwinkle"
+            className="w-full px-4 py-3 rounded-xl border border-brand-periwinkle text-sm text-brand-navy placeholder:text-brand-slate focus:outline-none focus:ring-2 focus:ring-brand-periwinkle"
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={e => setPassword(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border border-brand-periwinkle text-sm focus:outline-none focus:ring-2 focus:ring-brand-periwinkle"
+            className="w-full px-4 py-3 rounded-xl border border-brand-periwinkle text-sm text-brand-navy placeholder:text-brand-slate focus:outline-none focus:ring-2 focus:ring-brand-periwinkle"
           />
           <button
             onClick={handleLogin}
