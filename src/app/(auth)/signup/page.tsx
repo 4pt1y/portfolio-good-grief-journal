@@ -31,13 +31,13 @@ export default function SignupPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white px-4">
-      <div className="w-full max-w-md p-6 sm:p-8 bg-white rounded-2xl shadow-sm border border-brand-periwinkle">
+      <div className="w-full max-w-md p-6 sm:p-8 bg-white rounded-2xl shadow-sm border border-brand-periwinkle text-center">
         <div className="w-full flex justify-center mb-4">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logos/logo-horizontal.svg" alt="The Good Grief Journal" className="w-3/4 max-w-xs h-auto -mb-8" />
         </div>
-        <h1 className="text-2xl font-serif text-brand-navy mb-2 text-center">Begin your journey</h1>
-        <p className="text-brand-slate text-sm mb-8 text-center">Create your grief journal</p>
+        <h1 className="text-2xl font-serif text-brand-navy mb-2">Begin your journey</h1>
+        <p className="text-brand-slate text-sm mb-8">Create your grief journal</p>
 
         {error && (
           <p className="text-sm text-red-500 mb-4">{error}</p>
@@ -49,14 +49,14 @@ export default function SignupPage() {
             placeholder="Email"
             value={email}
             onChange={e => setEmail(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border border-brand-periwinkle text-sm text-brand-navy placeholder:text-brand-slate focus:outline-none focus:ring-2 focus:ring-brand-periwinkle"
+            className="w-full px-4 py-3 rounded-xl border border-brand-periwinkle text-sm placeholder:text-brand-slate focus:outline-none focus:ring-2 focus:ring-brand-periwinkle"
           />
           <input
             type="password"
             placeholder="Password (min 6 characters)"
             value={password}
             onChange={e => setPassword(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border border-brand-periwinkle text-sm text-brand-navy placeholder:text-brand-slate focus:outline-none focus:ring-2 focus:ring-brand-periwinkle"
+            className="w-full px-4 py-3 rounded-xl border border-brand-periwinkle text-sm placeholder:text-brand-slate focus:outline-none focus:ring-2 focus:ring-brand-periwinkle"
           />
           <button
             onClick={handleSignup}
