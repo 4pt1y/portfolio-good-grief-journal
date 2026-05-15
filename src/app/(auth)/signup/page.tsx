@@ -32,7 +32,7 @@ export default function SignupPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-white px-4">
       <div className="w-full max-w-md p-6 sm:p-8 bg-white rounded-2xl shadow-sm border border-brand-periwinkle">
-        <div className="w-full flex justify-center mb-8">
+        <div className="w-full flex justify-center mb-4">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logos/logo-horizontal.svg" alt="The Good Grief Journal" className="w-3/4 max-w-xs h-auto" />
         </div>
