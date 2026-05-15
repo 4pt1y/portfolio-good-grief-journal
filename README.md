@@ -51,6 +51,40 @@ ANTHROPIC_API_KEY=
 
 11 tables with full RLS policies. Migrations are in `supabase/migrations/`.
 
+## Payments
+
+### Payments (Stripe)
+
+The app uses Stripe for two products:
+- **Monthly subscription** ($9.99/mo) — required to access the journal. Managed via `STRIPE_SUBSCRIPTION_PRICE_ID`.
+- **Memory Book Unlock** ($27 one-time) — unlocks the PDF memory book feature. Managed via `STRIPE_MEMORY_BOOK_PRICE_ID`.
+
+#### Environment variables required
+```
+STRIPE_SECRET_KEY=sk_...
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_...
+STRIPE_SUBSCRIPTION_PRICE_ID=price_...
+STRIPE_MEMORY_BOOK_PRICE_ID=price_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+SUPABASE_SERVICE_ROLE_KEY=...
+NEXT_PUBLIC_APP_URL=https://yourdomain.com
+```
+
+#### Local webhook forwarding
+Install the Stripe CLI and run:
+```bash
+stripe listen --forward-to localhost:3000/api/stripe/webhook
+```
+This prints a webhook signing secret (`whsec_...`) — copy it into `STRIPE_WEBHOOK_SECRET` in `.env.local`.
+
+#### Stripe Dashboard setup
+1. Create the two products in the Stripe Dashboard (or use existing ones).
+2. Copy the price IDs into `STRIPE_SUBSCRIPTION_PRICE_ID` and `STRIPE_MEMORY_BOOK_PRICE_ID`.
+3. Register the webhook endpoint (`https://yourdomain.com/api/stripe/webhook`) in the Stripe Dashboard under Developers → Webhooks. Select events: `checkout.session.completed`, `customer.subscription.deleted`, `invoice.payment_failed`.
+
+#### Going live
+Switch `STRIPE_SECRET_KEY` and `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` from `sk_test_`/`pk_test_` to live keys. Update `NEXT_PUBLIC_APP_URL` to your production domain.
+
 ## Built By
 
 John Miller — Lead Data Architect and entrepreneur

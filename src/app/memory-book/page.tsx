@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Nav from '@/components/Nav'
 import MemoryBookList, { type MemoryBookItem } from './MemoryBookList'
+import PaywallGuard from '@/components/PaywallGuard'
 
 export default async function MemoryBookPage() {
   const supabase = await createClient()
@@ -102,6 +103,7 @@ export default async function MemoryBookPage() {
   )
 
   return (
+    <PaywallGuard>
     <div className="min-h-screen bg-white">
       <Nav
         desktopLinks={[
@@ -122,5 +124,6 @@ export default async function MemoryBookPage() {
         <MemoryBookList userId={user.id} items={items} />
       </main>
     </div>
+    </PaywallGuard>
   )
 }

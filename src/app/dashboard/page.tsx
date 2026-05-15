@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Nav from '@/components/Nav'
 import PromptCard from './PromptCard'
+import PaywallGuard from '@/components/PaywallGuard'
 
 function calculateStreak(dates: string[]): number {
   if (!dates.length) return 0
@@ -110,6 +111,7 @@ export default async function DashboardPage() {
   }
 
   return (
+    <PaywallGuard>
     <div className="min-h-screen bg-white">
       <Nav
         desktopLinks={[
@@ -182,5 +184,6 @@ export default async function DashboardPage() {
         )}
       </main>
     </div>
+    </PaywallGuard>
   )
 }

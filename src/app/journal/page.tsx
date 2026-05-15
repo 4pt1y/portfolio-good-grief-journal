@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Nav from '@/components/Nav'
 import JournalEditor from './JournalEditor'
+import PaywallGuard from '@/components/PaywallGuard'
 
 export default async function JournalPage({
   searchParams,
@@ -37,6 +38,7 @@ export default async function JournalPage({
   const promptText = prompt.text.replace(/\{name\}/g, lovedOne.name)
 
   return (
+    <PaywallGuard>
     <div className="min-h-screen bg-white">
       <Nav
         backHref="/dashboard"
@@ -64,5 +66,6 @@ export default async function JournalPage({
         />
       </main>
     </div>
+    </PaywallGuard>
   )
 }
