@@ -35,7 +35,7 @@ export default function Nav({ desktopLinks, userEmail, showDesktopSignOut = true
         </a>
       ) : (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src="/logos/logo-nav.png" alt="The Good Grief Journal" className="h-12 w-auto object-contain" style={{ clipPath: 'inset(0 8px 0 0)' }} />
+        <img src="/logos/logo-horizontal.svg" alt="The Good Grief Journal" className="h-10 w-auto" />
       )}
 
       {/* Desktop links */}

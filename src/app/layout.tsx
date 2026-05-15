@@ -16,8 +16,8 @@ export const metadata: Metadata = {
   title: 'The Good Grief Journal',
   description: 'A compassionate grief journaling app',
   icons: {
-    icon: '/logos/submark-circle-blush-navy.png',
-    apple: '/logos/submark-circle-blush-navy.png',
+    icon: '/logos/logo-horizontal.svg',
+    apple: '/logos/logo-horizontal.svg',
   },
 };
 
