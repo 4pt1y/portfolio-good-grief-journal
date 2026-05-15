@@ -45,7 +45,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md p-6 sm:p-8 bg-white rounded-2xl shadow-sm border border-brand-periwinkle">
         <div className="w-full flex justify-center mb-8">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logos/logo-horizontal.svg" alt="The Good Grief Journal" className="h-24 w-auto" />
+          <img src="/logos/logo-horizontal.svg" alt="The Good Grief Journal" className="w-64 h-auto" />
         </div>
         <h1 className="text-2xl font-serif text-brand-navy mb-2">Welcome back</h1>
         <p className="text-brand-slate text-sm mb-8">Sign in to your journal</p>
