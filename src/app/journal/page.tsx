@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import Link from 'next/link'
+import Nav from '@/components/Nav'
 import JournalEditor from './JournalEditor'
 
 export default async function JournalPage({
@@ -38,21 +38,12 @@ export default async function JournalPage({
 
   return (
     <div className="min-h-screen bg-white">
-      <nav className="bg-brand-blush border-b border-brand-periwinkle px-4 sm:px-6 py-4 flex justify-between items-center">
-        <a href="/dashboard" className="text-sm text-brand-slate hover:text-brand-navy transition-colors">
-          ← Back
-        </a>
-        <div className="flex items-center gap-2 sm:gap-4">
-          <Link
-            href="/photos"
-            className="text-sm text-brand-slate hover:text-brand-navy transition-colors hidden sm:inline"
-          >
-            Photos
-          </Link>
-          <span className="text-brand-periwinkle select-none hidden sm:inline">|</span>
-          <span className="text-sm text-brand-slate hidden sm:block">{user.email}</span>
-        </div>
-      </nav>
+      <Nav
+        backHref="/dashboard"
+        desktopLinks={[{ href: '/photos', label: 'Photos' }]}
+        userEmail={user.email}
+        showDesktopSignOut={false}
+      />
 
       <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
         <div className="bg-amber-50 border border-amber-100 rounded-2xl px-6 py-5 mb-8">

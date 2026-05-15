@@ -1,7 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import Link from 'next/link'
-import SignOutButton from '@/components/SignOutButton'
+import Nav from '@/components/Nav'
 import EntryList from './EntryList'
 
 export default async function HistoryPage() {
@@ -47,35 +46,14 @@ export default async function HistoryPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <nav className="bg-brand-blush border-b border-brand-periwinkle px-4 sm:px-6 py-4 flex justify-between items-center">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/logos/logo-nav.png" alt="The Good Grief Journal" className="h-12 w-auto object-contain" style={{ clipPath: 'inset(0 8px 0 0)' }} />
-        <div className="flex items-center gap-2 sm:gap-4">
-          <Link
-            href="/journal/history"
-            className="text-sm text-brand-navy font-medium"
-          >
-            Past entries
-          </Link>
-          <span className="text-brand-periwinkle select-none">|</span>
-          <Link
-            href="/dashboard"
-            className="text-sm text-brand-slate hover:text-brand-navy transition-colors"
-          >
-            Dashboard
-          </Link>
-          <span className="text-brand-periwinkle select-none hidden sm:inline">|</span>
-          <Link
-            href="/photos"
-            className="text-sm text-brand-slate hover:text-brand-navy transition-colors hidden sm:inline"
-          >
-            Photos
-          </Link>
-          <span className="text-brand-periwinkle select-none hidden sm:inline">|</span>
-          <span className="text-sm text-brand-slate hidden sm:inline">{user.email}</span>
-          <SignOutButton />
-        </div>
-      </nav>
+      <Nav
+        desktopLinks={[
+          { href: '/journal/history', label: 'Past entries', active: true },
+          { href: '/dashboard', label: 'Dashboard' },
+          { href: '/photos', label: 'Photos' },
+        ]}
+        userEmail={user.email}
+      />
 
       <main className="max-w-2xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
         <h2 className="text-3xl font-serif text-brand-navy mb-8">Past entries</h2>
